@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
+import Video from './Video'
 
 // O nome dado ao model (User) corresponde ao nome da tabela no banco de dados
 export default class User extends BaseModel {
@@ -30,6 +31,9 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasMany(() => Video)
+  public videos: HasMany<typeof Video>
 
   @beforeSave()
   public static async hashPassword(user: User) {
