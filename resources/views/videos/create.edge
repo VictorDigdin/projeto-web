@@ -1,0 +1,47 @@
+@layout('layouts/main')
+@set('title', 'Submeter Vídeo')
+
+@section('body')
+  <div class="h-full w-full bg-purple-900 absolute top-0 left-0 bg-gradient-to-b from-fuchsia-400 to-violet-900 bottom-0 leading-5 overflow-hidden">
+    <div class="flex flex-col mx-auto md:h-screen items-center justify-center px-7 py-7">
+      <div class="w-full bg-white justify-center rounded-lg shadow-xl sm:max-w-md md:mt-0 xl:p-0 z-10">
+        <div class="md:space-y-6 sm:p-8 p-7 rounded-xl space-y-4 "> 
+          <div class="flex justify-center">
+            <h1 class="text-xl font-bold text-black md:text-2xl">
+              Submeter Vídeo
+            </h1>
+          </div>
+
+          <form class="space-y-3 md:space-y-3" action="/submit-video" method="POST">
+            <!-- Título -->
+            @!formInput({labelFor: 'title', labelText: 'Título', iconClass: '', type: 'text', name: 'title', id: 'title', placeholder: '', value: '', customClass: 'focus:ring-cyan-400 focus:border-cyan-400'})
+
+            <!-- Descrição -->
+            @!formInput({labelFor: 'description', labelText: 'Descrição', iconClass: '', type: 'text', name: 'description', id: 'description', placeholder: '', value: '', customClass: 'focus:ring-cyan-400 focus:border-cyan-400'})
+            
+            <!-- URL -->
+            @!formInput({labelFor: 'url', labelText: 'URL', iconClass: '', type: 'text', name: 'url', id: 'url', placeholder: '', value: '', customClass: 'focus:ring-cyan-400 focus:border-cyan-400'})
+
+            <!-- Thumb -->
+            @!formInput({labelFor: 'thumb', labelText: 'Thumbnail', iconClass: '', type: 'text', name: 'thumb', id: 'thumb', placeholder: '', value: '', customClass: 'focus:ring-cyan-400 focus:border-cyan-400'})
+
+            <div>
+              <button type="submit" class="w-full flex items-center justify-center text-sm font-medium space-x-2 bg-cyan-500 hover:bg-cyan-900 focus:ring-4 focus:outline-none focus:ring-primary-300 px-5 py-2.5 text-gray-100 p-3 rounded-lg tracking-wide font-semibold cursor-pointer transition ease-in duration-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                <span>Enviar</span>
+              </button>
+            </div>
+          </form>  
+        </div>
+      </div>
+    </div>
+    <!-- Ondas da parte de baixo da página -->
+    <svg class="absolute bottom-0 left-0 z-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="white" fill-opacity="1"
+        d="M0,0L40,42.7C80,85,160,171,240,197.3C320,224,400,192,480,154.7C560,117,640,75,720,74.7C800,75,880,117,960,154.7C1040,192,1120,224,1200,213.3C1280,203,1360,149,1400,122.7L1440,96L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z">
+      </path>
+    </svg>
+  </div>
+@endsection

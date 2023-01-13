@@ -20,7 +20,7 @@ export default class UserController {
     const validatedData = await request.validate(StoreUserValidator)
 
     // Se os dados forem válidos o usuário será criado e inserido no BD
-    const user = await LoginUser.create({
+    await LoginUser.create({
       username: validatedData.username,
       email: validatedData.email,
       first_name: validatedData.firstName,

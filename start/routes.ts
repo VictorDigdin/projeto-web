@@ -21,7 +21,14 @@ Route.group(() => {
   Route.get('/logout', 'AuthController.destroy').as('destroy').middleware('auth')
 }).as('auth')
 
-// Todas as outras rotas específicas deve ser definida acima da rota curinga
+Route.group(() => {
+  Route.get('/submit-video', 'VideosController.create').as('create')
+  Route.post('/submit-video', 'VideosController.store').as('store')
+  Route.get('/show-videos', 'VideosController.index').as('index')
+  Route.get('/user-videos', 'VideosController.userVideos').as('userVideos')
+  Route.get('/video/:id', 'VideosController.show').as('singleVideo')
+}).as('videos')
+// Todas as outras rotas específicas devem ser definidas acima da rota curinga
 // Route.get('*', async ({ response }) => {
 //   return response.redirect().toRoute('index')
 // })

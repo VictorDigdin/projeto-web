@@ -1,0 +1,21 @@
+@layout('layouts/main')
+@set('title', 'Todos os vídeos')
+
+@section('body')
+  <div class="flex flex-col my-6">
+    <div class="flex justify-center items-center">
+      <table>
+        @each(video in videos)
+          <tr>
+            <td>
+              <a href="/video/{{ video.id }}">
+                Título: {{ video.title }}&nbsp
+              </a>
+            </td>
+            <td>Usuário: {{ video.user.username }}&nbsp</td>
+          </tr>
+        @end
+    </table>
+    </div>
+  </div>
+@endsection
