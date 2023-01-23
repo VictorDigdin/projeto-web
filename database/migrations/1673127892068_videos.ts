@@ -17,7 +17,7 @@ export default class extends BaseSchema {
       table.string('title', 255).notNullable()
       table.string('description', 255)
       table.string('url', 255).notNullable()
-      table.string('thumb', 255).notNullable()
+      table.string('url_id', 255).notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

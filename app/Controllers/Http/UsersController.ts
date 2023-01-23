@@ -27,10 +27,8 @@ export default class UserController {
       last_name: validatedData.lastName,
       password: validatedData.password,
     })
-    //Futuro alerta
-    // session.flash({
-    //   message: 'Cadastro efetuado com sucesso!',
-    // })
+
+    session.flash('alert', 'Cadastro efetuado com sucesso!')
 
     return response.redirect().toRoute('auth.create')
   }
@@ -57,12 +55,10 @@ export default class UserController {
       user.last_name = lastName ?? user.last_name
       user.password = password ?? user.password
       await user.save()
-      // Futuro alerta
-      // session.flash('notification', 'Informação atualizada!')
-      return response.redirect().toRoute('index')
+
+      session.flash('alert', 'Informação atualizada!')
+      return response.redirect().toRoute('users.edit')
     } catch (error) {
-      // Futuro alerta
-      // session.flash('errors', 'Ocorreu um erro ao atualizar as informações.')
       return response.redirect().back()
     }
   }

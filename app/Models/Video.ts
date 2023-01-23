@@ -20,7 +20,7 @@ export default class Video extends BaseModel {
   public url: string
 
   @column()
-  public thumb: string
+  public urlId: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -2,11 +2,7 @@
 @set('title', 'Fazer Login')
 
 @section('body')
-  <!-- 
-    sm = small screen, md = medium screen, lg = large screen
-    Por exemplo, quando coloco sm:p-8 isso quer dizer que em telas pequenas o componente vai ter padding de 32px (8 * 4)
-  -->
-  <div class="h-full w-full bg-purple-900 absolute top-0 left-0 bg-gradient-to-b from-pink-400 to-purple-900 bottom-0 leading-5 overflow-hidden z-20">
+  <div class="h-full w-full bg-purple-900 absolute top-0 left-0 bg-gradient-to-b from-pink-400 to-purple-700 bottom-0 leading-5 overflow-hidden z-20">
     <div class="flex flex-col mx-auto md:h-screen items-center justify-center px-7 py-7">
       <h2 class="font-semibold text-3xl text-white mb-6 my-6">
         Bem-vindo(a) de volta!
@@ -20,19 +16,21 @@
             </h1>
           </div>
 
+          @!alert({alertName: 'alert', divClass: 'text-green-700 bg-green-200', buttonClass: 'hover:bg-green-300 focus:ring-green-400'})
+
           <form class="space-y-4 md:space-y-6" action="/login" method="POST">
 
             <!-- Email -->
-            @!formInput({labelFor: 'email', labelText: 'Email', iconClass: 'mdi mdi-at text-gray-400 text-lg', type: 'email', name: 'email', id: 'email', placeholder: '', value: flashMessages.get('email') || '', customClass: 'focus:ring-purple-500 focus:border-purple-900'})
+            @!formInput({labelFor: 'email', labelText: 'Email', iconClass: 'mdi mdi-at text-gray-400 text-lg', type: 'email', name: 'email', id: 'email', placeholder: '', value: flashMessages.get('email') || '', customClass: 'focus:ring-purple-400 focus:border-purple-700'})
 
             <!-- Senha -->
-            @!formInput({labelFor: 'password', labelText: 'Senha', iconClass: 'mdi mdi-lock-outline text-gray-400 text-lg', type: 'password', name: 'password', id: 'password', placeholder: '', value: '', customClass: 'focus:ring-purple-500 focus:border-purple-900'})
+            @!formInput({labelFor: 'password', labelText: 'Senha', iconClass: 'mdi mdi-lock-outline text-gray-400 text-lg', type: 'password', name: 'password', id: 'password', placeholder: '', value: '', customClass: 'focus:ring-purple-400 focus:border-purple-700'})
 
             @if(flashMessages.has('errors.invalidLogin'))
               <p class="mt-2 text-sm text-red-600 font-medium">{{ flashMessages.get('errors.invalidLogin') }}</p>
             @endif
 
-            <div class="flex items-center justify-between">
+            {{--  <div class="flex items-center justify-between">
               <div class="flex items-start">
                 <!-- Botão de relembrar + Label -->
                 <div class="flex items-center h-5">
@@ -44,21 +42,12 @@
                   </label>
                 </div>
               </div>
-              {{--  <a href="#" class="text-sm font-medium hover:underline text-purple-700 hover:text-purple-600">
-                Esqueceu sua senha?
-              </a>  --}}
-            </div>
+            </div>  --}}
 
-            <div>
-              <button type="submit" class="w-full flex items-center justify-center text-sm font-medium space-x-2 bg-purple-600 hover:bg-purple-900 focus:ring-4 focus:outline-none focus:ring-primary-300 px-5 py-2.5  text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-100">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                </svg>
-                <span>Login</span>
-              </button>
-            </div>
-            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              Não tem uma conta ainda? <a href="{{ route('users.create') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Criar conta</a>
+            @!button({customClass: 'bg-purple-600 hover:bg-purple-900', text: 'Login'})
+
+            <p class="text-sm text-gray-500 font-light">
+              Não tem uma conta ainda? <a href="{{ route('users.create') }}" class="text-blue-600 font-medium hover:underline">Criar conta</a>
             </p>
           </form>  
         </div>

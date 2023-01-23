@@ -2,7 +2,7 @@
 @set('title', 'Cadastrar')
 
 @section('body')
-  <div class="h-full w-full absolute top-0 left-0 bg-gradient-to-b from-emerald-400 to-green-900 bottom-0 leading-5 overflow-hidden">
+  <div class="h-full w-full absolute top-0 left-0 bg-gradient-to-b from-emerald-400 to-green-700 bottom-0 leading-5 overflow-hidden">
     <div class="flex flex-col mx-auto md:h-screen items-center justify-center px-7 py-7">
       <h2 class="font-semibold text-3xl text-white mb-6 my-6">
         Bem-vindo(a)!
@@ -19,33 +19,27 @@
           <form class="space-y-3 md:space-y-3" action="/register" method="POST">
             
             <!-- Usuário -->
-            @!formInput({labelFor: 'username', labelText: 'Username', iconClass: 'mdi mdi-account text-gray-400 text-lg', type: 'text', name: 'username', id: 'username', placeholder: '', value: flashMessages.get('username') || '', customClass: 'focus:ring-cyan-500 focus:border-cyan-900'})
+            @!formInput({labelFor: 'username', labelText: 'Username', iconClass: 'mdi mdi-account text-gray-400 text-lg', type: 'text', name: 'username', id: 'username', placeholder: '', value: flashMessages.get('username') || '', customClass: 'focus:ring-green-400 focus:border-green-700'})
 
             <!-- Email -->
-            @!formInput({labelFor: 'email', labelText: 'Email', iconClass: 'mdi mdi-at text-gray-400 text-lg', type: 'email', name: 'email', id: 'email', placeholder: '', value: flashMessages.get('email') || '', customClass: 'focus:ring-cyan-500 focus:border-cyan-900'})
+            @!formInput({labelFor: 'email', labelText: 'Email', iconClass: 'mdi mdi-at text-gray-400 text-lg', type: 'email', name: 'email', id: 'email', placeholder: '', value: flashMessages.get('email') || '', customClass: 'focus:ring-green-400 focus:border-green-700'})
             
             <!-- Primeiro Nome -->
-            @!formInput({labelFor: 'firstName', labelText: 'Primeiro Nome', iconClass: 'mdi mdi-card-account-details text-gray-400 text-lg', type: 'text', name: 'firstName', id: 'firstName', placeholder: '', value: flashMessages.get('firstName') || '', customClass: 'focus:ring-cyan-500 focus:border-cyan-900'})
+            @!formInput({labelFor: 'firstName', labelText: 'Primeiro Nome', iconClass: 'mdi mdi-card-account-details text-gray-400 text-lg', type: 'text', name: 'firstName', id: 'firstName', placeholder: '', value: flashMessages.get('firstName') || '', customClass: 'focus:ring-green-400 focus:border-green-700'})
 
             <!-- Último Nome -->
-            @!formInput({labelFor: 'lastName', labelText: 'Último Nome', iconClass: 'mdi mdi-card-account-details-outline text-gray-400 text-lg', type: 'text', name: 'lastName', id: 'lastName', placeholder: '', value: flashMessages.get('lastName') || '', customClass: 'focus:ring-cyan-500 focus:border-cyan-900'})
+            @!formInput({labelFor: 'lastName', labelText: 'Último Nome', iconClass: 'mdi mdi-card-account-details-outline text-gray-400 text-lg', type: 'text', name: 'lastName', id: 'lastName', placeholder: '', value: flashMessages.get('lastName') || '', customClass: 'focus:ring-green-400 focus:border-green-700'})
 
             <!-- Senha -->
-            @!formInput({labelFor: 'password', labelText: 'Senha', iconClass: 'mdi mdi-lock-outline text-gray-400 text-lg', type: 'password', name: 'password', id: 'password', placeholder: '', value: '', customClass: 'focus:ring-cyan-500 focus:border-cyan-900'})
+            @!formInput({labelFor: 'password', labelText: 'Senha', iconClass: 'mdi mdi-lock-outline text-gray-400 text-lg', type: 'password', name: 'password', id: 'password', placeholder: '', value: '', customClass: 'focus:ring-green-400 focus:border-green-700'})
 
             <!-- Confirmação da Senha-->
-            @!formInput({labelFor: 'passwordConfirmation', labelText: 'Confirmação da Senha', iconClass: 'mdi mdi-lock-outline text-gray-400 text-lg', type: 'password', name: 'passwordConfirmation', id: 'passwordConfirmation', placeholder: '', value: '', customClass: 'focus:ring-cyan-500 focus:border-cyan-900'})
+            @!formInput({labelFor: 'passwordConfirmation', labelText: 'Confirmação da Senha', iconClass: 'mdi mdi-lock-outline text-gray-400 text-lg', type: 'password', name: 'passwordConfirmation', id: 'passwordConfirmation', placeholder: '', value: '', customClass: 'focus:ring-green-400 focus:border-green-700'})
 
-            <div>
-              <button type="submit" class="w-full flex items-center justify-center text-sm font-medium space-x-2 bg-green-600 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-primary-300 px-5 py-2.5  text-gray-100 p-3 rounded-lg tracking-wide font-semibold  cursor-pointer transition ease-in duration-100">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                </svg>
-                <span>Cadastrar</span>
-              </button>
-            </div>
-            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              Já tem uma conta? <a href="{{ route('auth.create') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Fazer login</a>
+            @!button({customClass: 'bg-green-600 hover:bg-green-900', text: 'Cadastrar'})
+          
+            <p class="text-sm text-gray-500 font-light">
+              Já tem uma conta? <a href="{{ route('auth.create') }}" class="text-blue-600 font-medium hover:underline">Fazer login</a>
             </p>
           </form>  
         </div>

@@ -1,12 +1,6 @@
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async ({ view }) => {
-  return view.render('index')
-})
-
-Route.get('/index', async ({ view }) => {
-  return view.render('index')
-}).as('index')
+Route.get('/', 'VideosController.index').as('index')
 
 Route.group(() => {
   Route.get('/register', 'UsersController.create').as('create')
@@ -24,10 +18,12 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/submit-video', 'VideosController.create').as('create')
   Route.post('/submit-video', 'VideosController.store').as('store')
-  Route.get('/show-videos', 'VideosController.index').as('index')
+  Route.get('/videos', 'VideosController.index').as('index')
   Route.get('/user-videos', 'VideosController.userVideos').as('userVideos')
   Route.get('/video/:id', 'VideosController.show').as('singleVideo')
+  Route.get('/videos/not-found', 'VideosController.notFound').as('notFound')
 }).as('videos')
+
 // Todas as outras rotas específicas devem ser definidas acima da rota curinga
 // Route.get('*', async ({ response }) => {
 //   return response.redirect().toRoute('index')

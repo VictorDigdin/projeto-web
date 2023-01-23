@@ -2,20 +2,32 @@
 @set('title', 'Todos os vídeos')
 
 @section('body')
-  <div class="flex flex-col my-6">
-    <div class="flex justify-center items-center">
-      <table>
-        @each(video in videos)
-          <tr>
-            <td>
-              <a href="/video/{{ video.id }}">
-                Título: {{ video.title }}&nbsp
-              </a>
-            </td>
-            <td>Usuário: {{ video.user.username }}&nbsp</td>
-          </tr>
-        @end
-    </table>
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-wrap -m-4">
+
+      @each(video in videos)
+        <div class="p-4 md:w-1/4">
+          <a href="/video/{{ video.id }}">
+            <div class="h-full border border-gray-200 rounded-xl shadow-md shadow-gray-300/70 bg-gradient-to-tr from-cyan-100/20 to-white overflow-hidden">
+              <img
+                class="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
+                src="https://img.youtube.com/vi/{{ video.urlId }}/hqdefault.jpg" alt="blog"
+              >
+              <div class="p-6">
+                <h1 class="truncate tracking-wide text-lg font-semibold text-gray-800 mb-3">{{ video.title }}</h1>
+                <h2 class="truncate tracking-wider text-sm font-medium text-gray-500 mb-1">{{ video.user.username }} •
+                  {{ video.createdAt.toLocaleString() }}</h2>
+              </div>
+            </div>
+          </a>
+        </div>
+      @end
+      
     </div>
+
+    @!pagination({videos: videos})
+
   </div>
+</section>
 @endsection

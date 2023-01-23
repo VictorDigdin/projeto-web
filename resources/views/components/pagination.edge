@@ -1,0 +1,146 @@
+@if(videos.lastPage > 1)
+    <div class="mt-10 flex items-center justify-center">
+        <p class="text-sm font-normal md:text-base text-gray-800">
+        Mostrando do 
+        <span class="font-medium">{{ videos.perPage * (videos.currentPage - 1) }}</span>
+        ao
+        <span class="font-medium">{{ videos.perPage * (videos.currentPage - 1) + videos.length }}</span>
+        dos
+        <span class="font-medium">{{ videos.total }}</span>
+        resultados
+        </p>
+    </div>
+@end
+
+<div class="flex items-center justify-center py-5 lg:px-0 sm:px-2 px-2">
+
+    @if(videos.lastPage > 1)
+        <div class="lg:w-3/5 w-full flex items-center justify-between border-t border-gray-200"> <!-- Barra em cima das páginas -->
+            <!-- Ícone + página anterior -->
+            <div class="flex items-center pt-3 text-gray-600 hover:text-blue-700 cursor-pointer">
+                <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.1665 4H12.8332" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.1665 4L4.49984 7.33333" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.1665 4.00002L4.49984 0.666687" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                @if(videos.currentPage - 1 >= videos.firstPage)
+                    <a href="{{ videos.getPreviousPageUrl() }}" class="text-sm md:text-base ml-3 font-medium leading-none">Anterior</a>
+                @else
+                    <p class="text-sm md:text-base ml-3 font-medium leading-none">Anterior</p>
+                @end                  
+            </div>
+
+            <div class="sm:flex md:flex hidden h-8 font-medium">
+                <!-- Fixando a 1° página -->
+                @if(videos.currentPage === 1)
+                    <a href="{{ videos.getUrl(videos.firstPage) }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-blue-700 border-t border-blue-600 pt-3 mr-4 px-2">
+                        {{ videos.firstPage }}
+                    </a>
+                @else
+                    <a href="{{ videos.getUrl(videos.firstPage) }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                        {{ videos.firstPage }}
+                    </a>
+                @end
+
+                <!-- Colocando os "..."" do início (não pode ser colocado quando tiver só 10 páginas) -->
+                @if(videos.currentPage - 4 >= videos.firstPage & videos.lastPage > 10)
+                    <a class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                        ...
+                    </a>
+                @end
+
+                <!-- Se tiver até 10 páginas mostra logo todas -->
+                @if(videos.lastPage <= 10)
+                    @each(anchor in videos.getUrlsForRange(2, videos.lastPage))
+                        @if(anchor.page === videos.currentPage)
+                            <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-blue-700 border-t border-blue-600 pt-3 mr-4 px-2">
+                                {{ anchor.page }}
+                            </a>
+                        @else
+                            <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                                {{ anchor.page }}
+                            </a>
+                        @end
+                    @endeach
+                
+                @else
+                    <!-- Tô na primeira página, não mostro páginas anteriores, apenas posteriores -->
+                    @if(videos.currentPage === videos.firstPage)
+                        @each(anchor in videos.getUrlsForRange(videos.currentPage + 1, videos.currentPage + 2))
+                            @if(anchor.page === videos.currentPage)
+                                <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-blue-700 border-t border-blue-600 pt-3 mr-4 px-2">
+                                    {{ anchor.page }}
+                                </a>
+                            @else
+                                <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                                    {{ anchor.page }}
+                                </a>
+                            @end
+                        @endeach
+                    
+                    <!-- Nem na primeira nem na última página -->
+                    @elseif(videos.currentPage !== videos.firstPag & videos.currentPage !== videos.lastPage)
+                        @each(anchor in videos.getUrlsForRange(videos.currentPage - 2 <= videos.firstPage ? videos.currentPage - 1 : videos.currentPage - 2, videos.currentPage + 2 >= videos.lastPage ? videos.currentPage + 1: videos.currentPage + 2))
+                            @if(anchor.page === videos.currentPage & anchor.page !== videos.firstPage & anchor.page !== videos.lastPage)
+                                <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-blue-700 border-t border-blue-600 pt-3 mr-4 px-2">
+                                    {{ anchor.page }}
+                                </a>
+   
+                            @elseif(anchor.page !== videos.firstPage & anchor.page !== videos.lastPage)
+                                <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                                    {{ anchor.page }}
+                                </a> 
+                            @end
+                        @endeach
+                    
+                    <!-- Tô na última página, não mostro páginas após, apenas anteriores + Fixando a última página -->
+                    @else(videos.currentPage === videos.lastPage)
+                        @each(anchor in videos.getUrlsForRange(videos.lastPage - 2, videos.lastPage - 1))
+                            @if(anchor.page === videos.currentPage)
+                                <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-blue-700 border-t border-blue-600 pt-3 mr-4 px-2">
+                                    {{ anchor.page }}
+                                </a>
+                            @else
+                                <a href="{{ anchor.url }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                                    {{ anchor.page }}
+                                </a>
+                            @end
+                        @endeach
+                        <!-- Está na última página, mostra ela como selecionada -->
+                        <a href="{{ videos.getUrl(videos.lastPage) }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-blue-700 border-t border-blue-600 pt-3 mr-4 px-2">
+                            {{ videos.lastPage }}
+                        </a>
+                    @end
+
+                    <!-- Colocando os "..."" do final -->
+                    @if(videos.currentPage + 4 <= videos.lastPage)
+                        <a class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                            ...
+                        </a>
+                    @end
+                    
+                    <!-- Fixando a última página sem deixar ela selecionada -->
+                    @if(videos.currentPage !== videos.lastPage)
+                        <a href="{{ videos.getUrl(videos.lastPage) }}" class="w-8 md:flex justify-center items-center hidden text-sm md:text-base font-medium leading-none cursor-pointer text-gray-600 hover:text-blue-700 border-t border-transparent hover:border-blue-600 pt-3 mr-4 px-2">
+                            {{ videos.lastPage }}
+                        </a>
+                    @end
+                @end
+            </div>
+
+            <!-- Ícone + próxima página -->
+            <div class="flex items-center pt-3 text-gray-600 hover:text-blue-700 cursor-pointer">
+                @if(videos.currentPage + 1 <= videos.lastPage)
+                    <a href="{{ videos.getNextPageUrl() }}" class="text-sm md:text-base font-medium leading-none mr-3">Próxima</a>
+                @else
+                    <p class="text-sm md:text-base font-medium leading-none mr-3">Próxima</p>
+                @end    
+                <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.1665 4H12.8332" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 7.33333L12.8333 4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.5 0.666687L12.8333 4.00002" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    @end
+</div>
