@@ -7,21 +7,27 @@
   @entryPointStyles('app')
   @entryPointScripts('app')
 </head>
-<body class="flex flex-col min-h-full">
 
-    @if (!request.matchesRoute(['/login', '/register']))
-      <div class="flex flex-col z-30">
-        @include('layouts/partials/header')
-      </div>
-    @endif
 
-    <div class="flex flex-col z-10">
-      @!section('body')
+<body class="flex flex-col bg-gray-100"> 
+  
+    <div class="flex flex-col z-30">
+      @include('layouts/partials/header')
     </div>
 
+  
+  @if (!request.matchesRoute(['/login', '/register']))
     <div class="flex flex-col z-20">
-      @include('layouts/partials/footer')
+      @include('layouts/partials/sidebar')
     </div>
+  @endif
 
+  <div class="md:ml-64">
+    @!section('body')
+  </div>
+
+  <div class="flex flex-col z-20">
+    @include('layouts/partials/footer')
+  </div>
 </body>
 </html>

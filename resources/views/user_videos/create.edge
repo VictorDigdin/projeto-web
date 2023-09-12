@@ -1,0 +1,32 @@
+@layout('layouts/main')
+@set('title', 'Submeter Vídeo')
+
+@section('body')
+  <div class="h-full w-full absolute top-0 bottom-0 left-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] leading-5">
+    <div class="flex flex-col h-screen items-center justify-center mx-auto my-auto md:ml-64 p-3">
+      <div class="w-full bg-white justify-center rounded-lg shadow-xl max-w-md md:mt-0 z-10">
+        <div class="py-8 px-5 min-[350px]:p-8 space-y-4 md:space-y-6 rounded-xl"> 
+          <div class="flex justify-center text-center">
+            <h1 class="text-xl md:text-2xl font-bold text-black">
+              Submeter Vídeo
+            </h1>
+          </div>
+
+          @!alert({alertName: 'alert', divClass: 'text-red-700 bg-red-200', buttonClass: 'hover:bg-red-300 focus:ring-red-400'})
+
+          <form class="space-y-3" action="/submit-video" method="POST">
+            <!-- Título -->
+            @!formInput({labelFor: 'title', labelText: 'Título', iconClass: '', type: 'text', name: 'title', id: 'title', placeholder: '', value: flashMessages.get('title') || '', customClass: 'pl-3 focus:focus:ring-[#302b63] focus:border-[#24243e]'})
+            
+            <!-- Descrição -->
+            @!textArea({labelFor: 'description', labelText: 'Descrição', name: 'description', id: 'description', placeholder: '', customClass: 'pl-3 focus:focus:ring-[#302b63] focus:border-[#24243e]'})
+            
+            <!-- URL -->
+            @!formInput({labelFor: 'url', labelText: 'URL', iconClass: '', type: 'text', name: 'url', id: 'url', placeholder: '', value: flashMessages.get('url') || '', customClass: 'pl-3 focus:focus:ring-[#302b63] focus:border-[#24243e]'})
+            
+            @!button({customClass: 'bg-[#302b63] hover:bg-[#24243e]', text: 'Enviar vídeo'})
+          </form>  
+        </div>
+      </div>
+    </div>
+@endsection

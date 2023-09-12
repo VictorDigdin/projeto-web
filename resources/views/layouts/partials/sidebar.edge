@@ -1,0 +1,53 @@
+<aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen bg-white border-r border-gray-200 transition-transform -translate-x-full md:translate-x-0 pt-20" aria-label="Sidebar">
+   <div class="h-full overflow-y-auto bg-white px-3 pb-4">
+      <ul class="space-y-2 font-medium">
+         <li>
+            <a href="{{ route('videos.index') }}" class="flex items-center text-gray-900 rounded-lg hover:bg-gray-100 p-2">
+               <img src="https://img.icons8.com/material-outlined/24/null/home-page.png"/>
+               <span class="flex-1 ml-3 whitespace-nowrap">Início</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{ route('userVideos.create') }}" class="flex items-center text-gray-900 rounded-lg hover:bg-gray-100 p-2">
+               <img src="https://img.icons8.com/material-outlined/24/null/submit-progress.png"/>
+               <span class="flex-1 ml-3 whitespace-nowrap">Enviar vídeo</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{ route('userVideos.index') }}" class="flex items-center text-gray-900 rounded-lg hover:bg-gray-100 p-2">
+               <img src="https://img.icons8.com/material-outlined/24/null/video-playlist.png"/>
+                <span class="flex-1 ml-3 whitespace-nowrap">Seus vídeos</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{ route('interactedVideos.watchedVideos') }}" class="flex items-center text-gray-900 rounded-lg hover:bg-gray-100 p-2">
+               <img src="https://img.icons8.com/sf-ultralight-filled/25/null/visible.png"/>
+                <span class="flex-1 ml-3 whitespace-nowrap">Vídeos assistidos</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{ route('interactedVideos.likedVideos') }}" class="flex items-center text-gray-900 rounded-lg hover:bg-gray-100 p-2">
+               <img src="https://img.icons8.com/material-outlined/24/null/facebook-like--v1.png"/>
+               <span class="flex-1 ml-3 whitespace-nowrap">Vídeos curtidos</span>
+            </a>
+         </li>
+         @if(!auth.isLoggedIn)
+            <div class="min-[650px]:hidden">
+               <hr class="my-3">
+               <li>
+                  <a href="#" class="flex items-center text-gray-900 rounded-lg hover:bg-gray-100 p-2">
+                     <img src="https://img.icons8.com/windows/24/null/enter-2.png"/>
+                     <span class="flex-1 ml-3 whitespace-nowrap">Entrar</span>
+                  </a>
+               </li>
+               <li>
+                  <a href="#" class="flex items-center text-gray-900 rounded-lg hover:bg-gray-100 p-2">
+                     <img src="https://img.icons8.com/external-tanah-basah-basic-outline-tanah-basah/24/null/external-add-user-social-media-ui-tanah-basah-basic-outline-tanah-basah.png"/>
+                     <span class="flex-1 ml-3 whitespace-nowrap">Cadastrar-se</span>
+                  </a>
+               </li>
+            </div>
+         @end
+      </ul>
+   </div>
+</aside>

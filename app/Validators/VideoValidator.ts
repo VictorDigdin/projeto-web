@@ -5,9 +5,9 @@ export default class VideoValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    title: schema.string({}, [rules.maxLength(100)]),
+    title: schema.string({}, [rules.maxLength(255)]),
 
-    description: schema.string.nullable({}, [rules.maxLength(255)]),
+    description: schema.string.nullable({}, [rules.maxLength(4096)]),
 
     url: schema.string({ trim: true }, [
       rules.url({
@@ -24,8 +24,8 @@ export default class VideoValidator {
 
   public messages: CustomMessages = {
     'required': 'Campo Obrigatório',
-    'title.maxLength': 'O título do vídeo deve conter até 100 caracteres',
-    'description.maxLength': 'A descrição do vídeo deve conter até 255 caracteres',
+    'title.maxLength': 'O título do vídeo deve conter até 255 caracteres',
+    'description.maxLength': 'A descrição do vídeo deve conter até 4096 caracteres',
     'url.url':
       'A URL inserida é inválida, verifique o domínio (aceitamos apenas o Youtube) e se o link é válido',
   }

@@ -1,41 +1,35 @@
-import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import Video from './Video'
 import User from './User'
+import { DateTime } from 'luxon'
 
-export default class Video extends BaseModel {
+export default class InteractedVideo extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  // Por padrão, o foreignKey é a representação camelCase do nome do modelo pai junto com sua chave primária
   @column()
   public userId: number
 
   @column()
-  public interactedVideoId: number
+  public videoId: number
 
   @column()
-  public title: string
+  public watched: boolean
 
   @column()
-  public description: string
+  public liked: boolean
 
   @column()
-  public url: string
-
-  @column()
-  public urlId: string
-
-  @column()
-  public likes: number
-
-  @column()
-  public dislikes: number
+  public disliked: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @belongsTo(() => Video)
+  public video: BelongsTo<typeof Video>
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>

@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'videos'
+  protected tableName = 'interacted_videos'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
@@ -10,16 +10,19 @@ export default class extends BaseSchema {
         .integer('user_id')
         .unsigned()
         .notNullable()
-        .references('id')
-        .inTable('users')
+        .references('users.id')
         .onUpdate('CASCADE')
-        .onDelete('CASCADE') // Com esse relacionamento quando excluir o usuário os vídeos dele serão excluidos
-      table.string('title', 255).notNullable()
-      table.string('description', 4096).nullable()
-      table.string('url', 255).notNullable()
-      table.string('url_id', 255).notNullable()
-      table.integer('likes').unsigned().defaultTo(0)
-      table.integer('dislikes').unsigned().defaultTo(0)
+        .onDelete('CASCADE')
+      table
+        .integer('video_id')
+        .unsigned()
+        .notNullable()
+        .references('videos.id')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE')
+      table.boolean('watched').defaultTo(false)
+      table.boolean('liked').defaultTo(false)
+      table.boolean('disliked').defaultTo(false)
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

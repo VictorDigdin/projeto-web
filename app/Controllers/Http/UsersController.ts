@@ -6,7 +6,6 @@ import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
 
 export default class UserController {
   public async create({ view, response, auth }: HttpContextContract) {
-    // Não permitir entrar se já estiver logado
     if (auth.isLoggedIn) return response.redirect().back()
 
     return view.render('users/create')
@@ -15,11 +14,9 @@ export default class UserController {
   public async store({ auth, request, response, session }: HttpContextContract) {
     if (auth.isLoggedIn) return response.redirect().back()
 
-    // Pegando todos os dados passados utilizando o validador
     session.flashAll()
     const validatedData = await request.validate(StoreUserValidator)
 
-    // Se os dados forem válidos o usuário será criado e inserido no BD
     await LoginUser.create({
       username: validatedData.username,
       email: validatedData.email,
@@ -33,10 +30,7 @@ export default class UserController {
     return response.redirect().toRoute('auth.create')
   }
 
-  public async show({}: HttpContextContract) {}
-
   public async edit({ view, response, auth }: HttpContextContract) {
-    // Não permitir entrar se NÃO estiver logado
     if (!auth.isLoggedIn) return response.redirect().back()
     return view.render('users/edit')
   }

@@ -5,7 +5,6 @@ export default class StoreUserValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    // Todos os campos são requiridos por predefinição, não precisa colocar o rules.required()
     username: schema.string({ trim: true }, [
       rules.alphaNum(),
       rules.minLength(3),

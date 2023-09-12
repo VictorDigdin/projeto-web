@@ -1,11 +1,12 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import User from 'App/Models/User'
 import Video from 'App/Models/Video'
-import VideoValidator from 'App/Validators/VideoValidator'
 
 export default class VideosController {
   public async index({ request, response, session, view }: HttpContextContract) {
-    const page = request.input('page', 1)
-    const limit = 10
+    let page = request.input('page', 1)
+    const limit = 20
+    page = !isNaN(page) ? page : -1
 
     try {
       const videos = await Video.query()
@@ -22,75 +23,25 @@ export default class VideosController {
         return response.redirect().toRoute('videos.notFound')
       }
 
-      videos.baseUrl('/videos')
-      return view.render('videos/index', { videos: videos })
-    } catch (err) {
-      console.log('Página inválida')
-      session.flash('message', {
-        normalText: 'A página procurada',
-        highlight: 'não pode ser encontrada',
-      })
-      return response.redirect().toRoute('videos.notFound')
-    }
-  }
-
-  public async create({ auth, response, view }: HttpContextContract) {
-    if (!auth.isLoggedIn) return response.redirect().back()
-    return view.render('videos/create')
-  }
-
-  public async store({ auth, request, response, session }: HttpContextContract) {
-    if (!auth.isLoggedIn) return response.redirect().back()
-
-    // Passando os dados de volta para o front
-    session.flashAll()
-
-    const validatedData = await request.validate(VideoValidator)
-    const { title, description, url } = validatedData
-    const videoUrl = new URL(url)
-    const videoId = videoUrl.searchParams.get('v')
-
-    if (!videoId) {
-      session.flash('alert', 'Vídeo inválido!')
-      return response.redirect().back()
-    }
-
-    await Video.create({
-      userId: auth.user?.id,
-      title: title,
-      description: description || '',
-      url: url,
-      urlId: videoId,
-    })
-
-    return response.redirect().toRoute('index')
-  }
-
-  // Mostrar vídeos do usuário
-  public async userVideos({ auth, request, response, session, view }: HttpContextContract) {
-    if (!auth.isLoggedIn) return response.redirect().back()
-
-    const page = request.input('page', 1)
-    const limit = 10
-
-    try {
-      const videos = await Video.query()
-        .preload('user')
-        .where('user_id', auth.user?.id)
-        .orderBy('created_at', 'desc')
-        .paginate(page, limit)
-
-      if (videos.lastPage < page) {
-        session.flash('message', {
-          normalText: 'A página procurada',
-          highlight: 'não pode ser encontrada',
-        })
-        return response.redirect().toRoute('videos.notFound')
+      const paginationLimit = 5
+      const sideLimit = (paginationLimit - 1) / 2
+      const pagination = {
+        start:
+          videos.currentPage - sideLimit > videos.firstPage
+            ? videos.currentPage - sideLimit
+            : Math.max(videos.currentPage - sideLimit, videos.firstPage),
+        end:
+          videos.lastPage < paginationLimit
+            ? videos.lastPage
+            : videos.currentPage < sideLimit + 1
+            ? paginationLimit
+            : Math.min(videos.currentPage + sideLimit, videos.lastPage),
       }
 
-      videos.baseUrl('/user-videos')
-      return view.render('videos/user_videos', { videos: videos })
-    } catch (err) {
+      videos.baseUrl('/')
+      return view.render('videos/index', { videos, sideLimit, pagination })
+    } catch (error) {
+      console.log(error)
       console.log('Página inválida')
       session.flash('message', {
         normalText: 'A página procurada',
@@ -100,13 +51,27 @@ export default class VideosController {
     }
   }
 
-  // Mostrar um único vídeo
-  public async show({ params, response, session, view }: HttpContextContract) {
+  public async show({ auth, params, response, session, view }: HttpContextContract) {
     try {
       const video = await Video.query().preload('user').where('id', params.id).firstOrFail()
-      return view.render('videos/show', { video: video })
-    } catch (err) {
-      console.log('Usuário tentou pesquisar vídeo inexistente')
+
+      if (auth.isLoggedIn && auth.user !== undefined) {
+        const user = await User.query()
+          .preload('interactedVideos', (interactedVideosQuery) =>
+            interactedVideosQuery.where('video_id', params.id)
+          )
+          .where('id', auth.user.id)
+          .firstOrFail()
+
+        return view.render('videos/show', {
+          video: video,
+          user: user,
+        })
+      } else {
+        return view.render('videos/show', { video: video })
+      }
+    } catch (error) {
+      console.log(error)
       session.flash('message', {
         normalText: 'O vídeo procurado',
         highlight: 'não pode ser encontrado',
@@ -115,8 +80,58 @@ export default class VideosController {
     }
   }
 
+  public async search({ request, response, session, view }: HttpContextContract) {
+    let page = request.input('page', 1)
+    let queryString = request.qs() // URL: /?username=digdin * qs: { username: 'digdin' }
+    let search = request.input('search').trim()
+    const limit = 12
+    page = !isNaN(page) ? page : -1
+
+    try {
+      const videos = await Video.query()
+        .preload('user')
+        .whereILike('title', '%' + search + '%')
+        .orderBy('created_at', 'desc')
+        .paginate(page, limit)
+
+      if (videos.lastPage < page) {
+        console.log('Página inválida')
+        session.flash('message', {
+          normalText: 'A página procurada',
+          highlight: 'não pode ser encontrada',
+        })
+        return response.redirect().toRoute('videos.notFound')
+      }
+
+      const paginationLimit = 5
+      const sideLimit = (paginationLimit - 1) / 2
+      const pagination = {
+        start:
+          videos.currentPage - sideLimit > videos.firstPage
+            ? videos.currentPage - sideLimit
+            : Math.max(videos.currentPage - sideLimit, videos.firstPage),
+        end:
+          videos.lastPage < paginationLimit
+            ? videos.lastPage
+            : videos.currentPage < sideLimit + 1
+            ? paginationLimit
+            : Math.min(videos.currentPage + sideLimit, videos.lastPage),
+      }
+      session.flashAll()
+      videos.baseUrl(request.url()).queryString(queryString)
+      return view.render('videos/search', { videos, sideLimit, pagination, search })
+    } catch (error) {
+      console.log(error)
+      console.log('Página inválida')
+      session.flash('message', {
+        normalText: 'Não foram encontrados resultados para a ',
+        highlight: 'pesquisa',
+      })
+      return response.redirect().toRoute('videos.notFound')
+    }
+  }
+
   public async notFound({ response, session, view }: HttpContextContract) {
-    /* Verificando se existe uma mensagem para poder acessar a página e retransmitindo para o site */
     if (session.flashMessages.has('message')) {
       const message = session.flashMessages.get('message')
       session.flash('message', message)
@@ -124,10 +139,4 @@ export default class VideosController {
     }
     return response.redirect().back()
   }
-
-  public async edit({}: HttpContextContract) {}
-
-  public async update({}: HttpContextContract) {}
-
-  public async destroy({}: HttpContextContract) {}
 }

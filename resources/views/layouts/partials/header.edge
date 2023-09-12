@@ -1,20 +1,110 @@
-<nav class="w-full bg-gray-800">
-  <div class="mx-auto max-w-screen-2xl px-2 sm:px-6 lg:px-8">
-    <div class="relative flex h-16 items-center justify-between">
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+  <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center justify-start">
 
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-        <div class="hidden sm:ml-6 sm:block">
-          <div class="flex space-x-4"> 
-            <a href="{{ route('index') }}" class="text-white hover:text-black text-base tracking-wider font-bold rounded-xl border-b-4 border-white hover:border-gray-300 hover:bg-gray-100 px-4 py-1" aria-current="page">
-              Início
+        <!-- Botão da barra lateral -->
+        <button data-drawer-target="sidebar" data-drawer-toggle="sidebar" aria-controls="sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+          <span class="sr-only">Abrir menu lateral</span>
+          <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+          </svg>
+        </button>
+
+        <a href="{{ route('videos.index') }}" class="flex hidden sm:block ml-2 md:mr-24">
+          <span class="self-center text-xl sm:text-2xl font-bold whitespace-nowrap">SeuTubo</span>
+        </a>
+      </div>
+
+      <form class="flex items-center mx-auto md:w-1/3 pl-2 focus:w-screen" method="GET" action="{{ route('videos.search') }}">   
+        <label for="search" class="sr-only">Digite a pesquisa</label>
+        <div class="relative w-full">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+          </div>
+          <input type="text" id="search" name="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" 
+            placeholder="Search" value="{{ search || ''}}" required/>
+        </div>
+        <button type="submit" class="hidden min-[500px]:block p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-xl border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span class="sr-only">Pesquisar</span>
+        </button>
+      </form>
+
+      @if(auth.isLoggedIn)
+        <div class="flex items-center">
+          <div class="flex items-center ml-3">
+            <div>
+              <button type="button" class="flex text-sm rounded-full focus:ring focus:ring-offset-0 focus:ring-blue-500 focus:outline-none overflow-hidden" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                <span class="sr-only">Abrir menu do usuário</span>
+                <img src="https://img.icons8.com/nolan/42/user-default.png"/>
+              </button>
+            </div>
+            
+            <div class="z-50 hidden text-base list-none bg-white rounded-md shadow p-2 my-4" id="dropdown-user">
+              <div class="font-medium px-4 py-3">
+                <span class="block truncate font-bold text-sm text-gray-900">{{ auth.user.username }}</span>
+                <span class="block truncate text-sm font-medium text-gray-500 truncate">{{ auth.user.email }}</span>
+                <hr class="mt-3">
+              </div>
+              <ul class="font-medium py-1" role="none" aria-labelledby="user-menu-button">
+                <li>
+                  <a href="{{ route('users.update') }}" class="block text-sm text-gray-700 hover:bg-gray-100 px-4 py-2" role="menuitem">Editar perfil</a>
+                </li>
+                <hr class="mt-3 mx-4">
+                <li>
+                  <a href="{{ route('auth.destroy') }}" class="block text-sm text-gray-700 hover:bg-gray-100 px-4 py-2" role="menuitem">Deslogar</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      @else
+        <div class="flex hidden min-[650px]:block items-center pr-2">
+          <div class="flex space-x-2">
+            <a href="{{ route('auth.create') }}">
+              <button type="button" class="text-black hover:text-white text-sm text-center tracking-wide font-semibold bg-white hover:bg-green-500 shadow-md rounded-2xl border-b-4 border-green-500 hover:border-green-600 px-6 py-2">
+                Entrar
+              </button>
             </a>
-            @if(auth.isLoggedIn)
-              <a href="{{ route('videos.create') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Enviar vídeo</a>
-              <a href="{{ route('videos.userVideos') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Seus vídeos</a>
-            @end
+            <a href="{{ route('users.create') }}">
+              <button type="button" class="text-black hover:text-white text-sm text-center tracking-wide font-semibold bg-white hover:bg-sky-600 shadow-md rounded-2xl border-b-4 border-blue-500 hover:border-blue-600 px-6 py-2">
+                Cadastrar
+              </button>
+            </a>
+          </div>
+        </div>
+      @end
+    </div>
+  </div>
+</nav>
+
+{{--  <nav class="fixed w-full bg-[#1d232b]">
+  <div class="mx-auto px-2 sm:pl-0 sm:pr-8 lg:pl-0 lg:pr-8">
+    <div class="flex h-16 items-center ">
+
+      <div class="flex flex-1 justify-center sm:items-stretch sm:justify-start">
+        <div class="hidden sm:ml-3 sm:block">
+          <div class="flex space-x-4"> 
+            <a href="{{ route('videos.index') }}" class="text-black text-base tracking-wider font-bold rounded-xl border-b-4 border-gray-300 hover:border-gray-500/80 bg-gray-100 hover:bg-gray-300/80 px-4 py-1" aria-current="page">
+              SeuTube
+            </a>
           </div>
         </div>
       </div>
+      <form class="flex items-center" method="GET" action="{{ route('videos.search') }}">   
+        <label for="search" class="sr-only">Search</label>
+        <div class="relative w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+            </div>
+            <input type="text" id="search" name="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" value="{{ search || ''}}" required>
+        </div>
+        <button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span class="sr-only">Search</span>
+        </button>
+      </form>
 
       @if(auth.isLoggedIn)
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -30,10 +120,9 @@
 
             <!-- Menu Dropdown -->
             <div class="absolute z-10 hidden w-48 mt-2 right-0 list-none origin-top-right rounded-md shadow bg-white py-1 focus:outline-none" id="user-dropdown">
-              
               <div class="px-4 py-3 font-medium">
-                <span class="block font-bold text-sm text-gray-900">{{auth.user.username}}</span>
-                <span class="block text-sm font-medium text-gray-500 truncate">{{auth.user.email}}</span>
+                <span class="block truncate font-bold text-sm text-gray-900">{{ auth.user.username }}</span>
+                <span class="block truncate text-sm font-medium text-gray-500 truncate">{{ auth.user.email }}</span>
                 <hr class="mt-3">
               </div>
 
@@ -46,7 +135,6 @@
                   <a href="{{ route('auth.destroy') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">Deslogar</a>
                 </li>
               </ul>
-
             </div>
           </div>
         </div>
@@ -66,7 +154,6 @@
           </div>
         </div>
       @end
-
     </div>
   </div>
-</nav>
+</nav>  --}}

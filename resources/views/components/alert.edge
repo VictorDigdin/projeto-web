@@ -1,5 +1,5 @@
 @if(flashMessages.has(alertName))
-    <div id="alert-1" class="alert {{ divClass }} rounded-lg py-3 px-6 text-base inline-flex items-center w-full alert-dismissible fade show" role="alert">
+    <div id="alert-1" class="alert {{ divClass }} rounded-lg py-3 px-6 text-sm min-[550px]:text-base inline-flex items-center w-full alert-dismissible fade show" role="alert">
         <span class="font-medium">{{ flashMessages.get(alertName) }}</span>
         <button type="button" class="{{ buttonClass }} ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex h-8 w-8" 
             data-dismiss-target="#alert-1"
